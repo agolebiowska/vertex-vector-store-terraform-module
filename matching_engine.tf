@@ -67,23 +67,6 @@ resource "google_compute_global_address" "vertex_range" {
   name          = "peering-range"
   purpose       = "VPC_PEERING"
   address_type  = "INTERNAL"
-  prefix_length = 24
+  prefix_length = 20 // 24 can get exhausted
   network       = data.google_compute_network.vertex_network.id
-}
-
-module "gcloud" {
-  source  = "terraform-google-modules/gcloud/google"
-  version = "~> 2.0"
-
-  platform = "linux"
-
-  create_cmd_entrypoint = "gcloud"
-  create_cmd_body       = <<EOT
-ai index-endpoints deploy-index ${google_vertex_ai_index_endpoint.index_endpoint.id} \
-  --deployed-index-id=${var.deployed_index_id} \
-  --display-name=${var.deployed_index_id} \
-  --index=${google_vertex_ai_index.index.id} \
-  --project=${var.project_id} \
-  --region=${var.location}
-EOT
 }

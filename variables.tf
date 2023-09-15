@@ -39,13 +39,13 @@ variable "bucket_name" {
 
 variable "index_config" {
   description = "Configuration for the index."
-  type = map(object({
+  type = object({
     dimensions                   = number
     shard_size                   = string
     distance_measure_type        = string
     leaf_node_embedding_count    = number
     leaf_nodes_to_search_percent = number
-  }))
+  })
   default = {
     dimensions                   = 768
     shard_size                   = "SHARD_SIZE_SMALL"
